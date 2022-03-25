@@ -1,0 +1,30 @@
+/*настройки стилей страницы*/
+html, body {
+  height: 100%;
+  margin: 0;
+}
+/*делаем чёрный фон и выравниваем всё по центру*/
+body {
+  background: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/*толщина холста — 1 пиксель, белый цвет*/
+canvas {
+  border: 1px solid white;
+}
+
+/* Media Query for Laptops and Desktops */
+@media (min-width: 1025px) and (max-width: 1280px){
+  body {
+    background-color: gray;
+  }
+}
+
+/* Media Query for Mobile Devices */
+@media (max-width: 480px) {
+  body {
+    background-color: #a6ada3;
+  }
+}
