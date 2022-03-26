@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Tetrisus</title>
+    <link media="all" rel="stylesheet" href="../styles/main.css">
+    <link rel='stylesheet' type="text/css" href='../styles/terisstyle.css' />
+</head>
+
+<body>
+    <nav class="navbar navbar-default navbar-static-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#app-navbar-collapse">
+                    <span class="sr-only">Toggle Navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="">
+                    Tetrisus
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="app-navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="">Войти</a></li>
+                    <li><a href="">Зарегистрироваться</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div id="tetris">
+        <div id="tetrisleft">
+            <canvas id="tetriscanvas" width="300" height="600"></canvas>
+            <audio id="clearsound" src="sound/pop.ogg" preload="auto"></audio>
+            <audio autoplay loop>
+                <source src="sound/music.ogg" type="audio/ogg; codecs=vorbis" preload="auto">
+                <small>Извините, тег audio не поддерживается вашим браузером</small>
+            </audio>
+        </div>
+        <div id="tetrisright">
+            <div align="center"><b>T E T R I S</b></div>
+            <p class="info">&harr;: move left/right;
+                <br>&uarr;: rotate;
+                <br>&darr; or _: drop;
+                <br>Esc: pause
+            </p>
+            <canvas id="figurecanvas" width="120" height="120"></canvas>
+            <p class="info" id="tetriscount"></p>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <script src='../jscripts/game.js'></script>
+    <script src='../jscripts/controller.js'></script>
+    <script src='../jscripts/canvas.js'></script>
+</body>
+
+</html>
