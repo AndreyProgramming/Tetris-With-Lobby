@@ -9,50 +9,43 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-default navbar-static-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                    data-target="#app-navbar-collapse">
-                    <span class="sr-only">Toggle Navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="">
-                    Tetrisus
-                </a>
-            </div>
-            <div class="collapse navbar-collapse" id="app-navbar-collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="">Войти</a></li>
-                    <li><a href="">Зарегистрироваться</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <nav class="navbar navbar-dark bg-dark">
+        <a class="nav-link navbar-brand" href="#">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Bootstrap_logo.svg/1200px-Bootstrap_logo.svg.png" width="30" height="30" alt=""> 
+            Tetrisus
+        </a>
+        <ul class="nav justify-content-end">
+            <li class="nav-item">
+              <a class="nav-link link-light active" href="#">Регистрация</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link link-light" href="#">Войти</a>
+            </li>
+          </ul>
+      </nav>
     <div id="tetris">
         <div id="tetrisleft">
             <canvas id="tetriscanvas" width="300" height="600"></canvas>
         </div>
         <div id="tetrisright">
             <div align="center"><b>T E T R I S</b></div>
-            <p class="info">&harr;: move left/right;
-                <br>&uarr;: rotate;
-                <br>&darr; or _: drop;
-                <br>Esc: pause
+            <p class="info">&harr;: двигать влево / вправо;
+                <br>&uarr;: поворачивать;
+                <br>&darr; или _: падать;
+                <br>Esc: пауза
             </p>
-            <canvas id="figurecanvas1" width="120" height="120"></canvas>
-            <canvas id="figurecanvas2" width="120" height="120"></canvas>
-            <canvas id="figurecanvas3" width="120" height="120"></canvas>
+            <canvas id="figurecanvas1" width="100" height="100"></canvas>
+            <canvas id="figurecanvas2" width="100" height="100"></canvas>
+            <canvas id="figurecanvas3" width="100" height="100"></canvas>
             <p class="info" id="tetriscount"></p>
-            <button type="button" class="btn btn-dark" onclick="pressedKeyDown(27)">Pause</button>
+            <button type="button" class="btn btn-dark" onclick="pressedKeyDown(27)">Пауза</button>
         </div>
         <div class="clear"></div>
     </div>
     <div class="mobile-buttons btn-group ml-auto">
+        <button type="button" class="btn btn-secondary" onclick="pressedKeyDown(39)" id="rightButton">Лобби</button>
         <button type="button" class="btn btn-dark" onclick="pressedKeyDown(37)" id="leftButton">&harr;</button>
-        <button type="button" class="btn btn-dark" id="downButton">Primary</button>
+        <button type="button" class="btn btn-dark" id="downButton">Что-то ещё</button>
         <button type="button" class="btn btn-dark" onclick="pressedKeyDown(38)" id="rotateButton">&uarr;</button>
         <button type="button" class="btn btn-dark" onclick="pressedKeyDown(39)" id="rightButton">&harr;</button>
     </div>
