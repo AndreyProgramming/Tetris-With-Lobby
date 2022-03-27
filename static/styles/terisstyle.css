@@ -10,6 +10,7 @@ body {
 
 #tetris {
     margin: 0 auto;
+    margin-top: 50px;
     width: 480px; 
     height: 600px; 
     text-align: center;
@@ -31,6 +32,14 @@ body {
     height: 600px; 
     float: left; 
     margin: 0px;
+}
+
+.mobile-buttons {
+    margin-left: 40vw;
+    margin-top: 15px;
+    width: 20vw;
+    display: flex;
+    justify-content: center;
 }
 
 .clear {
