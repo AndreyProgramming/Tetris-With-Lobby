@@ -35,9 +35,9 @@ body {
 }
 
 #mobile-buttons {
-    margin-left: 37.5vw;
+    margin-left: 35vw;
     margin-top: 15px;
-    width: 25vw;
+    width: 30vw;
     display: flex;
     justify-content: center;
     display: none;
