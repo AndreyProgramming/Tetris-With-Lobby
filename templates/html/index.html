@@ -47,10 +47,18 @@
     </div>
     <div id="mobile-buttons" class="btn-group ml-auto">
         <button type="button" class="btn btn-secondary" onclick="pressedKeyDown(39)" id="rightButton">Лобби</button>
-        <button type="button" class="btn btn-dark" o="pressedKeyDown(37)" id="leftButton">&harr;</button>
-        <button type="button" class="btn btn-dark" id="downButton">Что-то ещё</button>
-        <button type="button" class="btn btn-dark" onclick="pressedKeyDown(38)" id="rotateButton">&uarr;</button>
-        <button type="button" class="btn btn-dark" onclick="pressedKeyDown(39)" id="rightButton">&harr;</button>
+        <button type="button" class="btn btn-dark" onclick="pressedKeyDown(37)" id="leftButton">
+            <img src = "../../static/svg/tetris-buttons/left.svg" />
+        </button>
+        <button type="button" class="btn btn-dark" id="downButton">
+            <img src = "../../static/svg/tetris-buttons/down now.svg" />
+        </button>
+        <button type="button" class="btn btn-dark" onclick="pressedKeyDown(38)" id="rotateButton">
+            <img src = "../../static/svg/tetris-buttons/right turn.svg" />
+        </button>
+        <button type="button" class="btn btn-dark" onclick="pressedKeyDown(39)" id="rightButton">
+            <img src = "../../static/svg/tetris-buttons/right.svg" />
+        </button>
     </div>
     <script src='../../static/jscripts/game.js'></script>
     <script src='../../static/jscripts/controller.js'></script>

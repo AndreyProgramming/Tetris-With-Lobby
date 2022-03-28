@@ -4,7 +4,7 @@ var width = canvas.width, height = canvas.height;
 var blockWidth = width / columns, blockHeight = height / rows;
 
 var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-if (isMobile) {
+if (!isMobile) {
     document.getElementById("mobile-buttons").style.display = "block";
 }
 
