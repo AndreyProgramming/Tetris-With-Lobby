@@ -201,7 +201,8 @@ function playGame() { //Контроль падения фигурки, созд
 function newGame() { //Новая игра
   clearInterval(interval);
   init();
-  shaped = 0; newShape();
+  shaped = 0; 
+  newShape();
   lose = false; lines = 0; count = 0; countPlus(0);
   interval = setInterval(playGame, 300); //скорость игры, мс
 }

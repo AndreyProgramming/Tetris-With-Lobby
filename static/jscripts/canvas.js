@@ -1,4 +1,7 @@
 var canvas = document.getElementById('tetriscanvas');
+
+
+
 var ctx = canvas.getContext('2d');
 var width = canvas.width, height = canvas.height;
 var blockWidth = width / columns, blockHeight = height / rows;
@@ -37,3 +40,18 @@ function render() { //Нарисовать стакан и фигуры
 }
 
 setInterval(render, 50); //частота перерисовки, мс
+
+window.addEventListener('resize', function(event) {
+    
+    let height = $(document).height();
+
+    let scale = 1.67;
+    let tangent = 0.5;
+    
+    canvas.height = height / scale ;
+    canvas.width = height / scale * tangent;
+
+    width = canvas.width, height = canvas.height;
+    blockWidth = width / columns, blockHeight = height / rows;
+
+}, true);
