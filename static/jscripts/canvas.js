@@ -3,6 +3,11 @@ var ctx = canvas.getContext('2d');
 var width = canvas.width, height = canvas.height;
 var blockWidth = width / columns, blockHeight = height / rows;
 
+var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+if (isMobile) {
+    document.getElementById("mobile-buttons").style.display = "block";
+}
+
 function drawBlock(x, y) { //Нарисовать фигуру в позиции (x,y)
     ctx.fillRect(blockWidth * x, blockHeight * y, blockWidth - 1, blockHeight - 1);
     ctx.strokeRect(blockWidth * x, blockHeight * y, blockWidth - 1, blockHeight - 1);

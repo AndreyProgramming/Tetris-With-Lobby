@@ -21,6 +21,9 @@
             <li class="nav-item">
               <a class="nav-link link-light" href="#">Войти</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link link-danger" href="#">Выйти</a>
+            </li>
         </ul>
     </nav>
     <div id="tetris">
@@ -42,16 +45,16 @@
         </div>
         <div class="clear"></div>
     </div>
-    <div class="mobile-buttons btn-group ml-auto">
+    <div id="mobile-buttons" class="btn-group ml-auto">
         <button type="button" class="btn btn-secondary" onclick="pressedKeyDown(39)" id="rightButton">Лобби</button>
-        <button type="button" class="btn btn-dark" onclick="pressedKeyDown(37)" id="leftButton">&harr;</button>
+        <button type="button" class="btn btn-dark" o="pressedKeyDown(37)" id="leftButton">&harr;</button>
         <button type="button" class="btn btn-dark" id="downButton">Что-то ещё</button>
         <button type="button" class="btn btn-dark" onclick="pressedKeyDown(38)" id="rotateButton">&uarr;</button>
         <button type="button" class="btn btn-dark" onclick="pressedKeyDown(39)" id="rightButton">&harr;</button>
     </div>
-    <script src='../jscripts/game.js'></script>
-    <script src='../jscripts/controller.js'></script>
-    <script src='../jscripts/canvas.js'></script>
+    <script src='../../static/jscripts/game.js'></script>
+    <script src='../../static/jscripts/controller.js'></script>
+    <script src='../../static/jscripts/canvas.js'></script>
 </body>
 
 </html>
