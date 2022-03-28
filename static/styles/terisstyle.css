@@ -34,12 +34,17 @@ body {
     margin: 0px;
 }
 
-.mobile-buttons {
+#mobile-buttons {
     margin-left: 37.5vw;
     margin-top: 15px;
     width: 25vw;
     display: flex;
     justify-content: center;
+    display: none;
+}
+
+.visible {
+    display: block !important;
 }
 
 .clear {

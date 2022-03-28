@@ -7,6 +7,7 @@ var maxCount = 0; //Рекорд
 var interval; //Скорость игры в мс
 var current; //Текущая фигурка
 var currentX, currentY; //Позиция текущей фигурки
+var presavedShapes = []
 var shapes = [ //Массив фигур
   [1, 1, 1, 1], //I
   [1, 1, 1, 0, //L
@@ -28,18 +29,18 @@ var colors = [ //Массив цветов
 var shaped = 0; //Есть ли следующая фигурка
 var savedShape; //Следующая фигурка
 
-function drawNewShape(current) { //Нарисовать следующую фигуру на отдельной канве
-  var canvas = document.getElementById('figurecanvas1');
+function drawNewShape(canvasName, figure) { //Нарисовать следующую фигуру на отдельной канве
+  var canvas = document.getElementById(canvasName);
   var ctx = canvas.getContext('2d');
   var width = canvas.width, height = canvas.height;
   var blockWidth = width / 4, blockHeight = height / 4;
   ctx.fillStyle = 'red';
-  ctx.strokeStyle = 'black';
+  ctx.strokeStyle = 'white';
   ctx.clearRect(0, 0, width, height);
   for (var y = 0; y < 4; y++) {
     for (var x = 0; x < 4; x++) {
-      if (current[y][x]) {
-        ctx.fillStyle = colors[current[y][x] - 1];
+      if (figure[y][x]) {
+        ctx.fillStyle = colors[figure[y][x] - 1];
         ctx.fillRect(blockWidth * x, blockHeight * y, blockWidth - 1, blockHeight - 1);
         ctx.strokeRect(blockWidth * x, blockHeight * y, blockWidth - 1, blockHeight - 1);
       }
@@ -50,17 +51,18 @@ function drawNewShape(current) { //Нарисовать следующую фи�
 function generateShape() { //Сгенерировать следующую фигуру
   var id = Math.floor(Math.random() * shapes.length);
   var shape = shapes[id];
-  var current = [];
+  var figureShape = [];
   for (var y = 0; y < 4; y++) {
-    current[y] = [];
+    figureShape[y] = [];
     for (var x = 0; x < 4; x++) {
       var i = 4 * y + x;
-      if (typeof (shape[i]) != 'undefined' && shape[i]) current[y][x] = id + 1;
-      else current[y][x] = 0;
+      if (typeof (shape[i]) != 'undefined' && shape[i]) 
+        figureShape[y][x] = id + 1;
+      else 
+        figureShape[y][x] = 0;
     }
   }
-  if (shaped) drawNewShape(current);
-  return current;
+  return figureShape;
 }
 
 function newShape() { //Создать новую фигурку 4x4 в массиве current
@@ -71,11 +73,20 @@ function newShape() { //Создать новую фигурку 4x4 в масс
     current = generateShape();
     shaped = 1;
   }
-  savedShape = generateShape();
+  savedShape = presavedShapes.pop();
+  presavedShapes.push(generateShape());
+  if (shaped) {
+    drawNewShape('figurecanvas1', savedShape);
+    for (let i = 2; i < 4; i++) { 
+      drawNewShape('figurecanvas' + i, presavedShapes[i - 2]);
+    }
+  } 
   currentX = Math.floor((columns - 4) / 2); currentY = 0; //Начальная позиция новой фигурки
 }
 
 function init() { //Очистить стакан
+  presavedShapes.push(generateShape());
+  presavedShapes.push(generateShape());
   for (var y = 0; y < rows; ++y) {
     board[y] = [];
     for (var x = 0; x < columns; x++) board[y][x] = 0;
@@ -88,7 +99,7 @@ function countPlus(lines0) { //Подсчёт очков
   count += bonus[lines0];
   if (count > maxCount) maxCount = count;
   document.getElementById('tetriscount').innerHTML =
-    "Lines: " + lines + "<br>Count: " + count + "<br>Record: " + maxCount;
+    "Линий: " + lines + "<br>Очки: " + count + "<br>Рекорд: " + maxCount;
 }
 
 function freeze() { //Остановить фигурку и записать её положение в board
