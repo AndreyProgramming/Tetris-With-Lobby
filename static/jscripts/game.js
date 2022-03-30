@@ -41,8 +41,8 @@ function drawNewShape(canvasName, figure) { //Нарисовать следую�
     for (var x = 0; x < 4; x++) {
       if (figure[y][x]) {
         ctx.fillStyle = colors[figure[y][x] - 1];
-        ctx.fillRect(blockWidth * x, blockHeight * y, blockWidth - 1, blockHeight - 1);
-        ctx.strokeRect(blockWidth * x, blockHeight * y, blockWidth - 1, blockHeight - 1);
+        ctx.fillRect(blockWidth * x, blockHeight * y, blockWidth, blockHeight);
+        // ctx.strokeRect(blockWidth * x, blockHeight * y, blockWidth - 1, blockHeight - 1);
       }
     }
   }

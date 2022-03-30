@@ -12,13 +12,15 @@ if (isMobile) {
 }
 
 function drawBlock(x, y) { //Нарисовать фигуру в позиции (x,y)
-    ctx.fillRect(blockWidth * x, blockHeight * y, blockWidth - 1, blockHeight - 1);
-    ctx.strokeRect(blockWidth * x, blockHeight * y, blockWidth - 1, blockHeight - 1);
+    ctx.fillRect(blockWidth * x, blockHeight * y, blockWidth + 1, blockHeight + 1);
+    //ctx.strokeRect(blockWidth * x, blockHeight * y, blockWidth - 1, blockHeight - 1);
 }
 
 function render() { //Нарисовать стакан и фигуры
     ctx.clearRect(0, 0, width, height);
-    ctx.strokeStyle = 'white';
+
+    drawGrid();
+
     for (var x = 0; x < columns; x++) {
         for (var y = 0; y < rows; y++) {
             if (board[y][x]) {
@@ -28,7 +30,6 @@ function render() { //Нарисовать стакан и фигуры
         }
     }
     ctx.fillStyle = 'red';
-    ctx.strokeStyle = 'white';
     for (var y = 0; y < 4; y++) {
         for (var x = 0; x < 4; x++) {
             if (current[y][x]) {
@@ -39,7 +40,29 @@ function render() { //Нарисовать стакан и фигуры
     }
 }
 
-setInterval(render, 50); //частота перерисовки, мс
+function drawGrid()
+{
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = '#333';
+
+    for (var x = 0; x < columns; x++) {
+        ctx.beginPath();
+        ctx.moveTo(x * blockWidth, 0);
+        ctx.lineTo(x * blockWidth, height);
+        ctx.stroke();  
+    }
+
+    for (var y = 0; y < rows; y++) {
+        ctx.beginPath();
+        ctx.moveTo(0, y * blockHeight);
+        ctx.lineTo(width, y * blockHeight);
+        ctx.stroke();  
+    }
+    
+    
+}
+
+setInterval(render, 5); //частота перерисовки, мс
 
 window.addEventListener('resize', resizingWindow, true);
 
