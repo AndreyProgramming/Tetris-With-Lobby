@@ -41,8 +41,8 @@ function drawNewShape(canvasName, figure) { //Нарисовать следую�
     for (var x = 0; x < 4; x++) {
       if (figure[y][x]) {
         ctx.fillStyle = colors[figure[y][x] - 1];
-        ctx.fillRect(blockWidth * x, blockHeight * y, blockWidth - 1, blockHeight - 1);
-        ctx.strokeRect(blockWidth * x, blockHeight * y, blockWidth - 1, blockHeight - 1);
+        ctx.fillRect(blockWidth * x, blockHeight * y, blockWidth, blockHeight);
+        // ctx.strokeRect(blockWidth * x, blockHeight * y, blockWidth - 1, blockHeight - 1);
       }
     }
   }
@@ -73,7 +73,7 @@ function newShape() { //Создать новую фигурку 4x4 в масс
     current = generateShape();
     shaped = 1;
   }
-  savedShape = presavedShapes.pop();
+  savedShape = presavedShapes.shift();
   presavedShapes.push(generateShape());
   if (shaped) {
     drawNewShape('figurecanvas1', savedShape);
@@ -97,7 +97,8 @@ function countPlus(lines0) { //Подсчёт очков
   lines += lines0;
   var bonus = [0, 100, 300, 700, 1500];
   count += bonus[lines0];
-  if (count > maxCount) maxCount = count;
+  if (count > maxCount) 
+    maxCount = count;
   document.getElementById('tetriscount').innerHTML =
     "Линий: " + lines + "<br>Очки: " + count + "<br>Рекорд: " + maxCount;
 }
@@ -105,7 +106,8 @@ function countPlus(lines0) { //Подсчёт очков
 function freeze() { //Остановить фигурку и записать её положение в board
   for (var y = 0; y < 4; y++) {
     for (var x = 0; x < 4; x++) {
-      if (current[y][x]) board[y + currentY][x + currentX] = current[y][x];
+      if (current[y][x]) 
+        board[y + currentY][x + currentX] = current[y][x];
     }
   }
 }
@@ -114,7 +116,8 @@ function rotate(current) { //Вращение текущей фигурки curr
   var newCurrent = [];
   for (var y = 0; y < 4; y++) {
     newCurrent[y] = [];
-    for (var x = 0; x < 4; x++) newCurrent[y][x] = current[3 - x][y];
+    for (var x = 0; x < 4; x++) 
+      newCurrent[y][x] = current[3 - x][y];
   }
   return newCurrent;
 }
@@ -145,20 +148,25 @@ function clearLines() { //Проверить, есть ли заполненны
 function keyPress(key) { //Обработчик нажатий клавиш
   switch (key) {
     case 'escape':
+      // TODO : replace with pause menu
       window.alert('paused'); //В JS уже есть модальное окно :)
       break;
     case 'left':
-      if (valid(-1)) --currentX;
+      if (valid(-1)) 
+        --currentX;
       break;
     case 'right':
-      if (valid(1)) ++currentX;
+      if (valid(1)) 
+        ++currentX;
       break;
     case 'down':
-      if (valid(0, 1)) ++currentY;
+      if (valid(0, 1)) 
+        ++currentY;
       break;
     case 'rotate':
       var rotated = rotate(current);
-      if (valid(0, 0, rotated)) current = rotated;
+      if (valid(0, 0, rotated)) 
+        current = rotated;
       break;
   }
 }
@@ -172,10 +180,13 @@ function valid(offsetX, offsetY, newCurrent) { //Проверка допусти
   for (var y = 0; y < 4; y++) {
     for (var x = 0; x < 4; x++) {
       if (newCurrent[y][x]) {
-        if (typeof (board[y + offsetY]) == 'undefined' || typeof (board[y + offsetY][x + offsetX]) == 'undefined'
-          || board[y + offsetY][x + offsetX]
-          || x + offsetX < 0 || y + offsetY >= rows || x + offsetX >= columns) {
-          if (offsetY == 1) lose = true; //Конец игры, если текущая фигура - на верхней линии
+        if (typeof (board[y + offsetY]) == 'undefined' 
+            || typeof (board[y + offsetY][x + offsetX]) == 'undefined'
+            || board[y + offsetY][x + offsetX]
+            || x + offsetX < 0 || y + offsetY >= rows || x + offsetX >= columns) 
+        {
+          if (offsetY == 1) 
+            lose = true; //Конец игры, если текущая фигура - на верхней линии
           return false;
         }
       }
@@ -185,11 +196,17 @@ function valid(offsetX, offsetY, newCurrent) { //Проверка допусти
 }
 
 function playGame() { //Контроль падения фигурки, создание новой и очистка линии
-  if (valid(0, 1)) currentY++;
-  else {
+  if (valid(0, 1)) 
+  {
+    currentY++;
+  }
+  else 
+  {
     freeze();
     var cleared = clearLines();
-    if (cleared) countPlus(cleared);
+    if (cleared) 
+      countPlus(cleared);
+
     if (lose) {
       newGame();
       return false;
