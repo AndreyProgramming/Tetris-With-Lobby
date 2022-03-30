@@ -31,6 +31,7 @@ def login():
 		    else:
 		    	error_Incorrect = 'Incorrect password'
 		    	return render_template("/html/login.html", error_Incorrect=error_Incorrect)
+				
 		else:
 			error_Incorrect = 'Incorrect data'
 			return render_template("/html/login.html", error_Incorrect=error_Incorrect)
@@ -50,8 +51,7 @@ def register():
 		    error_Incorrect = 'This user already exist'
 		    return render_template("/html/registration.html", error_Incorrect=error_Incorrect)
 
-		item = Item(name_ = name_, email_ = email_, 
-					password_ = password_)
+		item = Item(name_ = name_, email_ = email_, password_ = password_)
 
 		try:
 			db.session.add(item)
