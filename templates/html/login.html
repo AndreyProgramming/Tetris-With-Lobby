@@ -19,12 +19,6 @@
     </head>
     <body>
         <div id="app">
-            <style>
-                .navbar {
-                    display: block;
-                    padding: 0;
-                }
-            </style>
             <nav class="navbar navbar-dark bg-dark">
                 <a class="nav-link navbar-brand" href="#">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Bootstrap_logo.svg/1200px-Bootstrap_logo.svg.png" width="30" height="30" alt=""> 
@@ -38,7 +32,7 @@
                       <a class="nav-link link-light" href="#">Войти</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link link-danger" href="#">Выйти</a>
+                        <a class="nav-link link-danger" href="#">Выйти</a>
                     </li>
                 </ul>
             </nav>
@@ -50,13 +44,13 @@
                             <div class="panel-body">
                                 <form class="form-horizontal" role="form" method="POST" action="">
                                     <div class="form-group">
-                                        <label for="name" class="col-md-4 control-label">Имя пользователя/E-mail</label>
+                                        <label for="name" class="col-md-4 control-label">Email</label>
                                         <div class="col-md-6">
                                             <input id="name" type="text" class="form-control" name="name" value="" required="" autofocus="">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="password" class="col-md-4 control-label">Пароль</label>
+                                        <label for="password" class="col-md-4 control-label">Password</label>
                                         <div class="col-md-6">
                                             <input id="password" type="password" class="form-control" name="password" required="">
                                         </div>
@@ -65,7 +59,7 @@
                                         <div class="col-md-6 col-md-offset-4">
                                             <div class="checkbox">
                                                 <label>
-                                                    <input id="remember-me" type="checkbox" name="remember" checked=""> Запомнить меня
+                                                    <input id="remember-me" type="checkbox" name="remember" checked=""> Remember Me
                                                 </label>
                                             </div>
                                         </div>
@@ -73,14 +67,19 @@
                                     <div class="form-group">
                                         <div class="col-md-8 col-md-offset-4">
                                             <button id="login-button" type="submit" class="btn btn-primary">
-                                                Войти
+                                                Login
                                             </button>
                                             <a class="btn btn-link" href="">
-                                                У меня нет аккаунта
+                                                I don't have account
                                             </a>
                                         </div>
                                     </div>
                                 </form>
+                                <center>
+                                {% if error_Incorrect %}
+                                <h4 class='msg_error'>{{ error_Incorrect }}</h4>
+                                {% endif %}
+                                </center>
                             </div>
                         </div>
                     </div>
