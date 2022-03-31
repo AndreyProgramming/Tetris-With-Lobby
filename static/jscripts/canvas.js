@@ -38,6 +38,18 @@ function render() { //Нарисовать стакан и фигуры
             }
         }
     }
+
+    if (isPaused )
+        drawPaused();
+}
+
+
+function drawPaused()
+{
+    ctx.fillStyle = "white";
+    ctx.font = "48px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText("Paused", width/2, height/2);
 }
 
 function drawGrid()
@@ -57,9 +69,7 @@ function drawGrid()
         ctx.moveTo(0, y * blockHeight);
         ctx.lineTo(width, y * blockHeight);
         ctx.stroke();  
-    }
-    
-    
+    }   
 }
 
 setInterval(render, 5); //частота перерисовки, мс

@@ -6,6 +6,10 @@ var count = 0; //Счёт
 var maxCount = 0; //Рекорд
 var interval; //Скорость игры в мс
 var current; //Текущая фигурка
+
+var defaultGameSpeed = 300;
+
+var isPaused = false;
 var currentX, currentY; //Позиция текущей фигурки
 var presavedShapes = []
 var shapes = [ //Массив фигур
@@ -24,7 +28,7 @@ var shapes = [ //Массив фигур
     1, 1, 1]
 ];
 var colors = [ //Массив цветов
-  'cyan', 'orange', 'blue', 'yellow', 'red', 'lime', 'purple'
+  '#0F9BD7', '#E35B02', '#2141C6', '#E39F02', '#D70F37', '#59B101', '#AF298A'
 ];
 var shaped = 0; //Есть ли следующая фигурка
 var savedShape; //Следующая фигурка
@@ -42,7 +46,6 @@ function drawNewShape(canvasName, figure) { //Нарисовать следую�
       if (figure[y][x]) {
         ctx.fillStyle = colors[figure[y][x] - 1];
         ctx.fillRect(blockWidth * x, blockHeight * y, blockWidth, blockHeight);
-        // ctx.strokeRect(blockWidth * x, blockHeight * y, blockWidth - 1, blockHeight - 1);
       }
     }
   }
@@ -67,7 +70,8 @@ function generateShape() { //Сгенерировать следующую фи�
 
 function newShape() { //Создать новую фигурку 4x4 в массиве current
   if (shaped) { //Есть сохранённая
-    for (var i = 0; i < savedShape.length; i++) current[i] = savedShape[i];
+    for (var i = 0; i < savedShape.length; i++) 
+      current[i] = savedShape[i];
   }
   else { //Нет сохранённой
     current = generateShape();
@@ -81,7 +85,8 @@ function newShape() { //Создать новую фигурку 4x4 в масс
       drawNewShape('figurecanvas' + i, presavedShapes[i - 2]);
     }
   } 
-  currentX = Math.floor((columns - 4) / 2); currentY = 0; //Начальная позиция новой фигурки
+  currentX = Math.ceil((columns - 4) / 2) + 1; 
+  currentY = 0; //Начальная позиция новой фигурки
 }
 
 function init() { //Очистить стакан
@@ -89,7 +94,8 @@ function init() { //Очистить стакан
   presavedShapes.push(generateShape());
   for (var y = 0; y < rows; ++y) {
     board[y] = [];
-    for (var x = 0; x < columns; x++) board[y][x] = 0;
+    for (var x = 0; x < columns; x++) 
+      board[y][x] = 0;
   }
 }
 
@@ -146,11 +152,16 @@ function clearLines() { //Проверить, есть ли заполненны
 }
 
 function keyPress(key) { //Обработчик нажатий клавиш
+  if (key == 'escape')
+  {
+    isPaused = !isPaused;
+    //document.getElementById("pause-window").style.display = isPaused ? 'block' : 'none';
+  } 
+
+  if (isPaused)
+    return;
+
   switch (key) {
-    case 'escape':
-      // TODO : replace with pause menu
-      window.alert('paused'); //В JS уже есть модальное окно :)
-      break;
     case 'left':
       if (valid(-1)) 
         --currentX;
@@ -160,7 +171,7 @@ function keyPress(key) { //Обработчик нажатий клавиш
         ++currentX;
       break;
     case 'down':
-      if (valid(0, 1)) 
+      if (valid(0, 1, current)) 
         ++currentY;
       break;
     case 'rotate':
@@ -180,12 +191,17 @@ function valid(offsetX, offsetY, newCurrent) { //Проверка допусти
   for (var y = 0; y < 4; y++) {
     for (var x = 0; x < 4; x++) {
       if (newCurrent[y][x]) {
-        if (typeof (board[y + offsetY]) == 'undefined' 
-            || typeof (board[y + offsetY][x + offsetX]) == 'undefined'
-            || board[y + offsetY][x + offsetX]
-            || x + offsetX < 0 || y + offsetY >= rows || x + offsetX >= columns) 
+        let isOutOfBounds = typeof (board[y + offsetY]) == 'undefined' 
+                          || typeof (board[y + offsetY][x + offsetX]) == 'undefined'
+                          || board[y + offsetY][x + offsetX]
+                          || x + offsetX < 0 
+                          || y + offsetY >= rows 
+                          || x + offsetX >= columns;
+
+
+        if (isOutOfBounds) 
         {
-          if (offsetY == 1) 
+          if (offsetY == 1 && currentY == 0) 
             lose = true; //Конец игры, если текущая фигура - на верхней линии
           return false;
         }
@@ -195,7 +211,10 @@ function valid(offsetX, offsetY, newCurrent) { //Проверка допусти
   return true;
 }
 
+
 function playGame() { //Контроль падения фигурки, создание новой и очистка линии
+  if (isPaused)
+    return;
   if (valid(0, 1)) 
   {
     currentY++;
@@ -215,13 +234,20 @@ function playGame() { //Контроль падения фигурки, созд
   }
 }
 
+function changeGameSpeed(newGameSpeed)
+{
+  clearInterval(interval);
+  interval = setInterval(playGame, newGameSpeed);
+}
+
 function newGame() { //Новая игра
+  console.log("reset game");
   clearInterval(interval);
   init();
   shaped = 0; 
   newShape();
   lose = false; lines = 0; count = 0; countPlus(0);
-  interval = setInterval(playGame, 300); //скорость игры, мс
+  interval = setInterval(playGame, defaultGameSpeed); //скорость игры, мс
 }
 
 newGame();
