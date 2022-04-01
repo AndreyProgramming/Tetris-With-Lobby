@@ -1,6 +1,6 @@
 var canvas = document.getElementById('tetriscanvas');
 
-
+var renderTime = 0;
 
 var ctx = canvas.getContext('2d');
 var width = canvas.width, height = canvas.height;
@@ -17,9 +17,10 @@ function drawBlock(x, y) { //Нарисовать фигуру в позиции
 }
 
 function render() { //Нарисовать стакан и фигуры
-    ctx.clearRect(0, 0, width, height);
-
+    ctx.clearRect(0, 0, width + 1, height + 1);
     drawGrid();
+    
+    renderTime += 0.005;
 
     for (var x = 0; x < columns; x++) {
         for (var y = 0; y < rows; y++) {
@@ -29,9 +30,11 @@ function render() { //Нарисовать стакан и фигуры
             }
         }
     }
+    
     ctx.fillStyle = 'red';
-    for (var y = 0; y < 4; y++) {
-        for (var x = 0; x < 4; x++) {
+
+    for (var y = 0; y < current.length; y++) {
+        for (var x = 0; x < current[0].length; x++) {
             if (current[y][x]) {
                 ctx.fillStyle = colors[current[y][x] - 1];
                 drawBlock(currentX + x, currentY + y);
@@ -41,6 +44,8 @@ function render() { //Нарисовать стакан и фигуры
 
     if (isPaused )
         drawPaused();
+
+    
 }
 
 
@@ -74,20 +79,17 @@ function drawGrid()
 
 setInterval(render, 5); //частота перерисовки, мс
 
-window.addEventListener('resize', resizingWindow, true);
+//window.addEventListener('resize', resizingWindow, true);
 
 function resizingWindow(event)
 {
-    let height = $(document).height();
+    let tangent = 2;
 
-    let scale = 1.67;
-    let tangent = 0.5;
+    width = canvas.width;
+    height = canvas.height;
 
-    canvas.height = height / scale ;
-    canvas.width = height / scale * tangent;
-
-    width = canvas.width, height = canvas.height;
-    blockWidth = width / columns, blockHeight = height / rows;
+    blockWidth = width / columns;
+    blockHeight = height / rows;
 }
 
-resizingWindow();
+//resizingWindow();
