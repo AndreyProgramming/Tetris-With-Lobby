@@ -1,4 +1,5 @@
-from flask import Flask, redirect, url_for, render_template, request, flash, session
+from flask import Flask, redirect, url_for, render_template, request, make_response, flash, session
+# from flask_login import UserMixin
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -21,9 +22,13 @@ def home():
 
 @app.route("/login", methods = ['POST', 'GET'])
 def login():
+	if 'username' in session:
+		return render_template("/html/index.html")
+
 	if request.method == "POST":
 		name_or_email_ = request.form['name']
 		password_ = request.form['password']
+		session['username'] = request.form['name']
 		if Item.query.filter_by(name_ = name_or_email_).first() or \
 		    Item.query.filter_by(email_ = name_or_email_).first():
 		    if Item.query.filter_by(password_ = password_).first():
@@ -63,6 +68,12 @@ def register():
 			return render_template("/html/registration.html", error_Incorrect=error_Incorrect)
 	else:
 		return render_template("/html/registration.html")
+
+
+@app.route("/logout", methods = ['POST', 'GET'])
+def logout():
+	session.pop('username', None)
+	return render_template("/html/login.html")
 
 
 if __name__ == "__main__":
