@@ -1,5 +1,8 @@
 * {
     touch-action: manipulation;
+    scroll-behavior: smooth;
+    overflow-y: hidden;
+    overflow-x: hidden;
 }
 
 body {
@@ -8,61 +11,87 @@ body {
 }
 
 #tetriscanvas {
-    display: block;
     border: 1px solid white;
 }
 
 #tetris {
-    margin: 0 auto;
-    margin-top: 50px;
-    width: 48vw; 
-    height: 60vh; 
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    clear: both;
-}
-
-#tetrisleft {
-    display: inline-block;
-    color: white;
-    width: 300px;
-    min-width: 300px;
-    height: 600px; 
-    margin: 0px; 
-}
-
-#tetrisright {
-    width: 180px; 
-    height: 600px; 
+    margin-top: 25px;
 }
 
 #mobile-buttons {
-    margin-top: 15px;
-    display: flex;
-    justify-content: center;
     display: none;
 }
 
-.visible {
-    display: block !important;
-}
-
-.clear {
-    clear: left; /* Отмена обтекания */
-}
-
-.info {
-    text-align: left;
-    margin-left: 24px;
-}
-
-@media only screen and (max-width: 600px) {
+@media only screen and (min-width: 0px) and (max-width: 400px) {
     #mobile-buttons {
         display: block;
     }
-}
+} 
 
 .lobby {
     border-radius: 15px;
+}
+
+#button-down {
+    width: 100px;
+    height: 100px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url( '../svg/tetris-buttons/down.svg');
+}
+
+#button-fall-immediate {
+    width: 100px;
+    height: 100px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url( '../svg/tetris-buttons/down\ now.svg');
+}
+
+#button-move-left {
+    width: 100px;
+    height: 100px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url( '../svg/tetris-buttons/left.svg');
+}
+
+#button-move-right {
+    width: 100px;
+    height: 100px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url( '../svg/tetris-buttons/right.svg');
+}
+
+#button-rotate-left {
+    width: 100px;
+    height: 100px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url( '../svg/tetris-buttons/left\ turn.svg');
+}
+
+#button-rotate-right {
+    width: 100px;
+    height: 100px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url( '../svg/tetris-buttons/right\ turn.svg');
+}
+
+#button-rotate-twice {
+    width: 100px;
+    height: 100px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url( '../svg/tetris-buttons/180\ turn.svg');
+}
+
+#button-swap { 
+    width: 100px;
+    height: 100px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url( '../svg/tetris-buttons/right\ left.svg');
 }

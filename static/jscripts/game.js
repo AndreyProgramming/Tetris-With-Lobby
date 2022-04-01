@@ -7,26 +7,40 @@ var maxCount = 0; //Рекорд
 var interval; //Скорость игры в мс
 var current; //Текущая фигурка
 
-var defaultGameSpeed = 300;
+var swapped_figure = null;
+
+var defaultGameSpeed = 500;
 
 var isPaused = false;
 var currentX, currentY; //Позиция текущей фигурки
 var presavedShapes = []
 var shapes = [ //Массив фигур
-  [1, 1, 1, 1], //I
-  [1, 1, 1, 0, //L
-    1],
-  [1, 1, 1, 0, //J
-    0, 0, 1],
-  [1, 1, 0, 0, //O
-    1, 1],
-  [1, 1, 0, 0, //Z
-    0, 1, 1],
-  [0, 1, 1, 0, //S
-    1, 1],
-  [0, 1, 0, 0, //T
-    1, 1, 1]
+  [
+    [0, 0, 0, 0],
+    [1, 1, 1, 1],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0]], //I
+  [[0, 0, 0], 
+    [1, 1, 1], 
+    [0, 0, 1]], // L
+  [[0, 0, 1],
+    [1, 1, 1], //J
+    [0, 0, 0],],
+  [[0, 0, 0, 0], 
+    [0, 1, 1, 0], //O
+    [0, 1, 1, 0],
+    [0, 0, 0, 0]],
+  [[0, 0, 0],
+    [1, 1, 0], //Z
+    [0, 1, 1]],
+  [[0, 0, 0],
+    [0, 1, 1], //S
+    [1, 1, 0]],
+  [[0, 1, 0], //T
+    [1, 1, 1],
+    [0, 0, 0]]
 ];
+
 var colors = [ //Массив цветов
   '#0F9BD7', '#E35B02', '#2141C6', '#E39F02', '#D70F37', '#59B101', '#AF298A'
 ];
@@ -41,8 +55,8 @@ function drawNewShape(canvasName, figure) { //Нарисовать следую�
   ctx.fillStyle = 'red';
   ctx.strokeStyle = 'white';
   ctx.clearRect(0, 0, width, height);
-  for (var y = 0; y < 4; y++) {
-    for (var x = 0; x < 4; x++) {
+  for (var y = 0; y < figure.length; y++) {
+    for (var x = 0; x < figure[0].length; x++) {
       if (figure[y][x]) {
         ctx.fillStyle = colors[figure[y][x] - 1];
         ctx.fillRect(blockWidth * x, blockHeight * y, blockWidth, blockHeight);
@@ -51,15 +65,28 @@ function drawNewShape(canvasName, figure) { //Нарисовать следую�
   }
 }
 
+function swapFigures() {
+  if (swapped_figure == null)
+  {
+    swapped_figure = current;
+    newShape();
+    drawNewShape("swap-figure-canvas", swapped_figure);
+    return;
+  }
+  let temp = current;
+  current = swapped_figure;
+  swapped_figure = temp;
+  drawNewShape("swap-figure-canvas", swapped_figure);
+}
+
 function generateShape() { //Сгенерировать следующую фигуру
   var id = Math.floor(Math.random() * shapes.length);
   var shape = shapes[id];
   var figureShape = [];
-  for (var y = 0; y < 4; y++) {
+  for (var y = 0; y < shape.length; y++) {
     figureShape[y] = [];
-    for (var x = 0; x < 4; x++) {
-      var i = 4 * y + x;
-      if (typeof (shape[i]) != 'undefined' && shape[i]) 
+    for (var x = 0; x < shape[0].length; x++) {
+      if (shape[y][x]) 
         figureShape[y][x] = id + 1;
       else 
         figureShape[y][x] = 0;
@@ -68,7 +95,17 @@ function generateShape() { //Сгенерировать следующую фи�
   return figureShape;
 }
 
+function immediateFall() {
+  let maxY = 0;
+  while (valid(0, maxY + 1, current))
+  {
+    maxY++;
+  }
+  currentY += maxY;
+}
+
 function newShape() { //Создать новую фигурку 4x4 в массиве current
+  current = [];
   if (shaped) { //Есть сохранённая
     for (var i = 0; i < savedShape.length; i++) 
       current[i] = savedShape[i];
@@ -110,8 +147,8 @@ function countPlus(lines0) { //Подсчёт очков
 }
 
 function freeze() { //Остановить фигурку и записать её положение в board
-  for (var y = 0; y < 4; y++) {
-    for (var x = 0; x < 4; x++) {
+  for (var y = 0; y < current.length; y++) {
+    for (var x = 0; x < current[0].length; x++) {
       if (current[y][x]) 
         board[y + currentY][x + currentX] = current[y][x];
     }
@@ -120,10 +157,10 @@ function freeze() { //Остановить фигурку и записать е
 
 function rotate(current) { //Вращение текущей фигурки current против часовой стрелки
   var newCurrent = [];
-  for (var y = 0; y < 4; y++) {
+  for (var y = 0; y < current.length; y++) {
     newCurrent[y] = [];
-    for (var x = 0; x < 4; x++) 
-      newCurrent[y][x] = current[3 - x][y];
+    for (var x = 0; x < current[0].length; x++) 
+      newCurrent[y][x] = current[current[0].length - x - 1][y];
   }
   return newCurrent;
 }
@@ -174,10 +211,31 @@ function keyPress(key) { //Обработчик нажатий клавиш
       if (valid(0, 1, current)) 
         ++currentY;
       break;
-    case 'rotate':
+    case "immediate-fall":
+      immediateFall();
+      break;
+    case 'rotate-left':
       var rotated = rotate(current);
       if (valid(0, 0, rotated)) 
         current = rotated;
+      break;
+    case 'rotate-right':
+      var rotated = rotate(current);
+      if (valid(0, 0, rotated)) 
+        rotated = rotate(rotated);
+        if (valid(0, 0, rotated)) 
+          rotated = rotate(rotated);
+          if (valid(0, 0, rotated)) 
+            current = rotated;
+      break;
+    case 'rotate-twice':
+      var rotated = rotate(current);
+      if (valid(0, 0, rotated)) 
+        rotated = rotate(rotated);
+        if (valid(0, 0, rotated)) 
+          current = rotated;
+    case 'swap-figures':
+      swapFigures();
       break;
   }
 }
@@ -188,8 +246,8 @@ function valid(offsetX, offsetY, newCurrent) { //Проверка допусти
   offsetX = currentX + offsetX;
   offsetY = currentY + offsetY;
   newCurrent = newCurrent || current;
-  for (var y = 0; y < 4; y++) {
-    for (var x = 0; x < 4; x++) {
+  for (var y = 0; y < newCurrent.length; y++) {
+    for (var x = 0; x < newCurrent[0].length; x++) {
       if (newCurrent[y][x]) {
         let isOutOfBounds = typeof (board[y + offsetY]) == 'undefined' 
                           || typeof (board[y + offsetY][x + offsetX]) == 'undefined'
