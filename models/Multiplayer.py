@@ -1,5 +1,5 @@
-import Lobby
-import Player
+from models.Lobby import *
+from models.Player import *
 import random as rand
 
 class Multiplayer():

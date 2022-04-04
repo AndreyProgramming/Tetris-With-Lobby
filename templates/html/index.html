@@ -30,6 +30,11 @@
                     <a type="button" href="/lobby" class="btn btn-secondary">Лобби</a>
                 </div>
             </div>
+            <div id="admin-panel" class="col">
+                <h2>Действия администратора</h2>
+                <label for="customRange1" class="form-label">Скорость игры</label>
+                <input type="range" class="form-range" id="customRange1" min="10" max="1000" step="10" oninput="changeGameSpeed(this.value)">
+            </div>
         </div>
         <div id="mobile-buttons">
             <div class="row justify-content-md-center">

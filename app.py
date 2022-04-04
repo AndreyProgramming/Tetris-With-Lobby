@@ -1,4 +1,5 @@
 from audioop import mul
+from email.policy import default
 from flask import Flask, redirect, url_for, render_template, request, make_response, flash, session
 # from flask_login import UserMixin
 from flask_sqlalchemy import SQLAlchemy
@@ -19,12 +20,20 @@ class Item(db.Model):
 	name_ = db.Column(db.String(20), nullable = False)
 	email_ = db.Column(db.String(30), nullable = False)
 	password_ = db.Column(db.String(20), nullable = False)
+	accessLevel_ = db.Column(db.Integer, primary_key = False, default=0)
 
+def renderIndex():
+	return render_template(
+		"/html/index.html", 
+		logged_in=('username' in session), 
+		access_level=Item.query.filter_by(name_ = session['username']).first()
+		)
 
 @app.route("/", methods = ['POST', 'GET'])
 def home():
 	if 'username' in session:
-		return render_template("/html/index.html", logged_in=('username' in session))
+		renderIndex()
+		
 	if request.method == "POST":
 		name_or_email_ = request.form['name']
 		password_ = request.form['password']
@@ -46,7 +55,7 @@ def home():
 @app.route("/login", methods = ['POST', 'GET'])
 def login():
 	if 'username' in session:
-		return render_template("/html/index.html", logged_in=('username' in session))
+		renderIndex()
 
 	if request.method == "POST":
 		name_or_email_ = request.form['name']
@@ -123,7 +132,7 @@ def create_lobby():
 def join_lobby():
 	keycode = request.form['keycode']
 	plr = Player(session['username'])
-	multiplayer.joinLobby(plr, keycode);
+	multiplayer.joinLobby(plr, keycode)
 
 @app.route("/logout", methods = ['POST', 'GET'])
 def logout():
