@@ -58,8 +58,7 @@ def register():
 			error_Incorrect = 'This user already exist'
 			return render_template("/html/registration.html", error_Incorrect=error_Incorrect, logged_in=('username' in session))
 
-		item = Item(name_ = name_, email_ = email_, 
-					password_ = password_)
+		item = Item(name_ = name_, email_ = email_, password_ = password_)
 
 		try:
 			db.session.add(item)
