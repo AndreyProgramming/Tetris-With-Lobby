@@ -17,30 +17,33 @@ class Item(db.Model):
 
 @app.route("/")
 def home():
-	return render_template("/html/index.html")
+	if 'username' in session:
+		return render_template("/html/index.html", logged_in=('username' in session))
+		
+	return render_template("/html/login.html", logged_in=('username' in session))
 
 
 @app.route("/login", methods = ['POST', 'GET'])
 def login():
 	if 'username' in session:
-		return render_template("/html/index.html")
+		return render_template("/html/index.html", logged_in=('username' in session))
 
 	if request.method == "POST":
 		name_or_email_ = request.form['name']
 		password_ = request.form['password']
 		session['username'] = request.form['name']
 		if Item.query.filter_by(name_ = name_or_email_).first() or \
-		    Item.query.filter_by(email_ = name_or_email_).first():
-		    if Item.query.filter_by(password_ = password_).first():
-		    	return redirect('/')
-		    else:
-		    	error_Incorrect = 'Incorrect password'
-		    	return render_template("/html/login.html", error_Incorrect=error_Incorrect)
+			Item.query.filter_by(email_ = name_or_email_).first():
+			if Item.query.filter_by(password_ = password_).first():
+				return redirect('/')
+			else:
+				error_Incorrect = 'Incorrect password'
+				return render_template("/html/login.html", error_Incorrect=error_Incorrect, logged_in=('username' in session))
 		else:
 			error_Incorrect = 'Incorrect data'
-			return render_template("/html/login.html", error_Incorrect=error_Incorrect)
+			return render_template("/html/login.html", error_Incorrect=error_Incorrect, logged_in=('username' in session))
 	else:
-		return render_template("/html/login.html")
+		return render_template("/html/login.html", logged_in=('username' in session))
 
 
 @app.route("/register", methods = ['POST', 'GET'])
@@ -52,8 +55,8 @@ def register():
 
 		if Item.query.filter_by(name_ = name_).first() or \
 		    Item.query.filter_by(email_ = email_).first():
-		    error_Incorrect = 'This user already exist'
-		    return render_template("/html/registration.html", error_Incorrect=error_Incorrect)
+			error_Incorrect = 'This user already exist'
+			return render_template("/html/registration.html", error_Incorrect=error_Incorrect, logged_in=('username' in session))
 
 		item = Item(name_ = name_, email_ = email_, 
 					password_ = password_)
@@ -65,10 +68,25 @@ def register():
 		except Exception as e:
 			print(e)
 			error_Incorrect = 'UNKNOWN DATABASE ERROR\nHis text:\n' + e
-			return render_template("/html/registration.html", error_Incorrect=error_Incorrect)
+			return render_template("/html/registration.html", error_Incorrect=error_Incorrect, logged_in=('username' in session))
 	else:
-		return render_template("/html/registration.html")
+		return render_template("/html/registration.html", logged_in=('username' in session))
 
+@app.route("/lobby", methods = ['POST', 'GET'])
+def lobby():
+	if 'username' in session:
+		return render_template("/html/index.html", logged_in=('username' in session))
+
+	return render_template("lobby.html", logged_in=('username' in session))
+
+
+@app.route("/create_lobby", methods = ['POST', 'GET'])
+def create_lobby():
+	pass
+
+@app.route("/join_lobby", methods = ['POST', 'GET'])
+def join_lobby():
+	pass
 
 @app.route("/logout", methods = ['POST', 'GET'])
 def logout():

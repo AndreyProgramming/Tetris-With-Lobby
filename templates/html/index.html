@@ -8,25 +8,8 @@
     <link media="all" rel="stylesheet" href="../../static/styles/terisstyle.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
-
 <body>
-    <nav class="navbar navbar-dark bg-dark">
-        <a class="nav-link navbar-brand" href="/">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Bootstrap_logo.svg/1200px-Bootstrap_logo.svg.png" width="30" height="30" alt=""> 
-            Tetrisus
-        </a>
-        <ul class="nav justify-content-end">
-            <li class="nav-item">
-              <a class="nav-link link-light active" href="registration.html">Регистрация</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link link-light" href="login.html">Войти</a>
-            </li>
-            <li class="nav-item">
-              <button class="nav-link btn link-danger">Выйти</button>
-            </li>
-        </ul>
-    </nav>
+    {% include "/html/header.html" %}
     <div id="tetris" class="container">
         <div class="row">
             <div class="col" id="tetrisleft">
@@ -44,7 +27,7 @@
                 <p class="info" id="tetriscount"></p>
                 <div class="btn-group">
                     <button type="button" class="btn btn-dark" onclick="pressedOnceButton(27)">Пауза</button>
-                    <a type="button" href="lobby.html" class="btn btn-secondary">Лобби</a>
+                    <a type="button" href="/lobby" class="btn btn-secondary">Лобби</a>
                 </div>
             </div>
         </div>

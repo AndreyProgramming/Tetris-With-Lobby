@@ -1,0 +1,20 @@
+<nav class="navbar navbar-dark bg-dark">
+    <a class="nav-link navbar-brand" href="/">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Bootstrap_logo.svg/1200px-Bootstrap_logo.svg.png" width="30" height="30" alt=""> 
+        Tetrisus
+    </a>
+    <ul class="nav justify-content-end">
+        {% if not logged_in %}
+            <li class="nav-item">
+            <a class="nav-link link-light active" href="/register">Регистрация</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link link-light" href="/login">Войти</a>
+            </li>
+        {% else %}
+            <li class="nav-item">
+            <a href="/logout" class="nav-link btn link-danger">Выйти</a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
