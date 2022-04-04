@@ -21,12 +21,26 @@ class Item(db.Model):
 	password_ = db.Column(db.String(20), nullable = False)
 
 
-@app.route("/")
+@app.route("/", methods = ['POST', 'GET'])
 def home():
 	if 'username' in session:
 		return render_template("/html/index.html", logged_in=('username' in session))
-		
-	return render_template("/html/login.html", logged_in=('username' in session))
+	if request.method == "POST":
+		name_or_email_ = request.form['name']
+		password_ = request.form['password']
+		session['username'] = request.form['name']
+		if Item.query.filter_by(name_ = name_or_email_).first() or \
+			Item.query.filter_by(email_ = name_or_email_).first():
+			if Item.query.filter_by(password_ = password_).first():
+				return redirect('/')
+			else:
+				error_Incorrect = 'Incorrect password'
+				return render_template("/html/login.html", error_Incorrect=error_Incorrect, logged_in=('username' in session))
+		else:
+			error_Incorrect = 'Incorrect data'
+			return render_template("/html/login.html", error_Incorrect=error_Incorrect, logged_in=('username' in session))
+	else:	
+		return render_template("/html/login.html", logged_in=('username' in session))
 
 
 @app.route("/login", methods = ['POST', 'GET'])
@@ -82,7 +96,22 @@ def lobby():
 	if 'username' in session:
 		return render_template("/html/lobby.html", logged_in=('username' in session))
 
-	return render_template("/html/login.html", logged_in=('username' in session))
+	if request.method == "POST":
+		name_or_email_ = request.form['name']
+		password_ = request.form['password']
+		session['username'] = request.form['name']
+		if Item.query.filter_by(name_ = name_or_email_).first() or \
+			Item.query.filter_by(email_ = name_or_email_).first():
+			if Item.query.filter_by(password_ = password_).first():
+				return redirect('/')
+			else:
+				error_Incorrect = 'Incorrect password'
+				return render_template("/html/login.html", error_Incorrect=error_Incorrect, logged_in=('username' in session))
+		else:
+			error_Incorrect = 'Incorrect data'
+			return render_template("/html/login.html", error_Incorrect=error_Incorrect, logged_in=('username' in session))
+	else:
+		return render_template("/html/login.html", logged_in=('username' in session))
 
 
 @app.route("/create_lobby", methods = ['POST', 'GET'])
@@ -99,7 +128,22 @@ def join_lobby():
 @app.route("/logout", methods = ['POST', 'GET'])
 def logout():
 	session.pop('username', None)
-	return render_template("/html/login.html")
+	if request.method == "POST":
+		name_or_email_ = request.form['name']
+		password_ = request.form['password']
+		session['username'] = request.form['name']
+		if Item.query.filter_by(name_ = name_or_email_).first() or \
+			Item.query.filter_by(email_ = name_or_email_).first():
+			if Item.query.filter_by(password_ = password_).first():
+				return redirect('/')
+			else:
+				error_Incorrect = 'Incorrect password'
+				return render_template("/html/login.html", error_Incorrect=error_Incorrect, logged_in=('username' in session))
+		else:
+			error_Incorrect = 'Incorrect data'
+			return render_template("/html/login.html", error_Incorrect=error_Incorrect, logged_in=('username' in session))
+	else:
+		return render_template("/html/login.html", logged_in=('username' in session))
 
 
 if __name__ == "__main__":
