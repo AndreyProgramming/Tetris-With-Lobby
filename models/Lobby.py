@@ -1,4 +1,6 @@
-
+import asyncio
+import websockets
+ 
 class Lobby():
     players = []
     lobby_code = 0
@@ -6,7 +8,7 @@ class Lobby():
 
     def __init__(self, playerHost):
         self.host = playerHost
-        self.players.add(playerHost)  
+        self.players.append(playerHost)  
 
     def addPlayer(self, opponent):
         if len(self.players) == 2:
@@ -15,8 +17,25 @@ class Lobby():
         self.players.append(opponent)
         self.startGame()
 
+    async def handler(websocket, path):
+        data = await websocket.recv()
+        reply = f"Data recieved as:  {data}!"
+        await websocket.send(reply)
+        
     def startGame(self):
-        pass
+        start_server = websockets.serve(self.handler, "localhost", 8000)
+        asyncio.get_event_loop().run_until_complete(start_server)        
+        asyncio.get_event_loop().run_forever()
+
+        
+
+
+        
+
+        
+        
+        
+        
 
 
 

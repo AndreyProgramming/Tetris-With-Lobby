@@ -30,13 +30,10 @@
                     <a type="button" href="/lobby" class="btn btn-secondary">Лобби</a>
                 </div>
             </div>
-            {% if access_level >= 5 %}
-            <div id="admin-panel" class="col">
-                <h2>Действия администратора</h2>
-                <label for="customRange1" class="form-label">Скорость игры</label>
-                <input type="range" class="form-range" id="customRange1" min="10" max="1000" step="10" oninput="changeGameSpeed(this.value)">
+            <div class="col" id="opponent-tetris">
+                <canvas id="tetriscanvas" width="300px" height="600px">
+                </canvas>
             </div>
-            {% endif %}
         </div>
         <div id="mobile-buttons">
             <div class="row justify-content-md-center">
@@ -78,9 +75,24 @@
         </div>
         <div class="clear"></div>
     </div>
+    <button onclick="contactServer">Click Here</button>
     <script src='../../static/jscripts/game.js'></script>
     <script src='../../static/jscripts/controller.js'></script>
     <script src='../../static/jscripts/canvas.js'></script>
+        const socket = new WebSocket('ws://localhost:8000');
+        
+        socket.addEventListener('open', function (event) {
+            socket.send('Connection Established');
+        });
+        
+        socket.addEventListener('message', function (event) {
+            console.log(event.data);
+        });
+        
+        const contactServer = () => {
+            socket.send("Initialize");
+        }
+    </script>
 </body>
 
 </html>

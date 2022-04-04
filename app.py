@@ -20,19 +20,20 @@ class Item(db.Model):
 	name_ = db.Column(db.String(20), nullable = False)
 	email_ = db.Column(db.String(30), nullable = False)
 	password_ = db.Column(db.String(20), nullable = False)
-	accessLevel_ = db.Column(db.Integer, primary_key = False, default=0)
+	accessLevel_ = db.Column(db.Integer, primary_key = False)
 
 def renderIndex():
+	print(session['username'])
 	return render_template(
 		"/html/index.html", 
 		logged_in=('username' in session), 
-		access_level=Item.query.filter_by(name_ = session['username']).first()
+		access_level=Item.query.filter_by(name_ = session['username']).first().accessLevel_
 		)
 
 @app.route("/", methods = ['POST', 'GET'])
 def home():
 	if 'username' in session:
-		renderIndex()
+		return renderIndex()
 		
 	if request.method == "POST":
 		name_or_email_ = request.form['name']
@@ -55,7 +56,7 @@ def home():
 @app.route("/login", methods = ['POST', 'GET'])
 def login():
 	if 'username' in session:
-		renderIndex()
+		return renderIndex()
 
 	if request.method == "POST":
 		name_or_email_ = request.form['name']
@@ -127,12 +128,14 @@ def lobby():
 def create_lobby():
 	plr = Player(session['username'])
 	multiplayer.createNewLobby(plr)
+	return render_template("/html/multiplayer.html")
 
 @app.route("/join_lobby", methods = ['POST', 'GET'])
 def join_lobby():
 	keycode = request.form['keycode']
 	plr = Player(session['username'])
 	multiplayer.joinLobby(plr, keycode)
+	return render_template("/html/multiplayer.html")
 
 @app.route("/logout", methods = ['POST', 'GET'])
 def logout():
