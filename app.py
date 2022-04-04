@@ -1,12 +1,18 @@
+from audioop import mul
 from flask import Flask, redirect, url_for, render_template, request, make_response, flash, session
 # from flask_login import UserMixin
 from flask_sqlalchemy import SQLAlchemy
+
+from models.Multiplayer import *
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'djvnksocebclfenfevl'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///usersTetris.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+
+multiplayer = Multiplayer();
 
 class Item(db.Model):
 	id_ = db.Column(db.Integer, primary_key = True)
@@ -74,18 +80,21 @@ def register():
 @app.route("/lobby", methods = ['POST', 'GET'])
 def lobby():
 	if 'username' in session:
-		return render_template("/html/index.html", logged_in=('username' in session))
+		return render_template("/html/lobby.html", logged_in=('username' in session))
 
-	return render_template("lobby.html", logged_in=('username' in session))
+	return render_template("/html/login.html", logged_in=('username' in session))
 
 
 @app.route("/create_lobby", methods = ['POST', 'GET'])
 def create_lobby():
-	pass
+	plr = Player(session['username'])
+	multiplayer.createNewLobby(plr)
 
 @app.route("/join_lobby", methods = ['POST', 'GET'])
 def join_lobby():
-	pass
+	keycode = request.form['keycode']
+	plr = Player(session['username'])
+	multiplayer.joinLobby(plr, keycode);
 
 @app.route("/logout", methods = ['POST', 'GET'])
 def logout():
