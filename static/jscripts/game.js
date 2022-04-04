@@ -294,8 +294,9 @@ function playGame() { //Контроль падения фигурки, созд
 
 function changeGameSpeed(newGameSpeed)
 {
+  let speed = 1000 - newGameSpeed;
   clearInterval(interval);
-  interval = setInterval(playGame, newGameSpeed);
+  interval = setInterval(playGame, speed);
 }
 
 function newGame() { //Новая игра
