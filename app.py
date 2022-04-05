@@ -1,17 +1,20 @@
+import websockets
 from audioop import mul
-from email.policy import default
-from flask import Flask, redirect, url_for, render_template, request, make_response, flash, session
-# from flask_login import UserMixin
-from flask_sqlalchemy import SQLAlchemy
-
 from models.Multiplayer import *
+from email.policy import default
+from flask_sqlalchemy import SQLAlchemy
+from flask_socketio import SocketIO, join_room, leave_room, emit
+from flask import Flask, redirect, url_for, render_template, request, make_response, flash, session
 
 
 app = Flask(__name__)
+app.debug = True
 app.config['SECRET_KEY'] = 'djvnksocebclfenfevl'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///usersTetris.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+
+socketio = SocketIO(app, manage_session = False)
 
 multiplayer = Multiplayer();
 
@@ -52,7 +55,6 @@ def home():
 	else:	
 		return render_template("/html/login.html", logged_in=('username' in session))
 
-
 @app.route("/login", methods = ['POST', 'GET'])
 def login():
 	if 'username' in session:
@@ -74,7 +76,6 @@ def login():
 			return render_template("/html/login.html", error_Incorrect=error_Incorrect, logged_in=('username' in session))
 	else:
 		return render_template("/html/login.html", logged_in=('username' in session))
-
 
 @app.route("/register", methods = ['POST', 'GET'])
 def register():
@@ -123,7 +124,6 @@ def lobby():
 	else:
 		return render_template("/html/login.html", logged_in=('username' in session))
 
-
 @app.route("/create_lobby", methods = ['POST', 'GET'])
 def create_lobby():
 	plr = Player(session['username'])
@@ -157,6 +157,26 @@ def logout():
 	else:
 		return render_template("/html/login.html", logged_in=('username' in session))
 
+################ Sockets #################
+
+@socketio.on('join', namespace = '/lobby')
+def joinLobby(message):
+	room = session.get('username')
+	join_room(room)
+	emit('status', {'msg' : session.get('username') + 'has entered in the lobby.'}, room = room)
+
+@socketio.on('text', namespace = '/lobby')
+def textLobby(message):
+	room = session.get('username')
+	emit('message', {'msg' : session.get('username') + ' : ' + message['msg']}, room = room)
+
+@socketio.on('join', namespace = '/lobby')
+def joinLobby(message):
+	room = session.get('username')
+	leave_room(room)
+	emit('status', {'msg' : session.get('username') + 'has left the lobby.'}, room = room)
+
 
 if __name__ == "__main__":
-	app.run(debug = True, port = 2356)
+	socketio.run(app, port = 2356)
+	#app.run(debug = True, port = 2356)
