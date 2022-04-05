@@ -42,7 +42,7 @@ function render() { //Нарисовать стакан и фигуры
         }
     }
 
-    if (isPaused )
+    if (isPaused && !isMultiplayer)
         drawPaused();
 
     

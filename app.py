@@ -127,8 +127,8 @@ def lobby():
 @app.route("/create_lobby", methods = ['POST', 'GET'])
 def create_lobby():
 	plr = Player(session['username'])
-	multiplayer.createNewLobby(plr)
-	return render_template("/html/multiplayer.html")
+	keycode = multiplayer.createNewLobby(plr)
+	return render_template("/html/multiplayer.html", room_code=keycode)
 
 @app.route("/join_lobby", methods = ['POST', 'GET'])
 def join_lobby():
@@ -179,4 +179,3 @@ def joinLobby(message):
 
 if __name__ == "__main__":
 	socketio.run(app, port = 2356)
-	#app.run(debug = True, port = 2356)

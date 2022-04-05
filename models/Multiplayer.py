@@ -12,6 +12,7 @@ class Multiplayer():
         lobby = Lobby(newPlayer)
         lobby.code = self.generateLobbyCode()
         self.lobbies[lobby.code] = lobby
+        return lobby.code
 
     def joinLobby(self, newPlayer, keycode):
         if not self.lobbies[keycode]:
@@ -22,16 +23,22 @@ class Multiplayer():
 
     def generateLobbyCode(self):
         
-        code = "0"
-        while self.lobbies[code]:
-            code = str(
-                rand.randint(10) * (10 ** 1) 
-                + rand.randint(10) * (10 ** 2) 
-                + rand.randint(10) * (10 ** 3)
-                + rand.randint(10) * (10 ** 4)
-                + rand.randint(10) * (10 ** 5)
-                + rand.randint(10) * (10 ** 6)
+        code = str(
+                rand.randint(0, 10) * (10 ** 1) 
+                + rand.randint(0, 10) * (10 ** 2) 
+                + rand.randint(0, 10) * (10 ** 3)
+                + rand.randint(0, 10) * (10 ** 4)
+                + rand.randint(0, 10) * (10 ** 5)
+                + rand.randint(0, 10) * (10 ** 6)
             ) 
-            print(code)
+        while code in self.lobbies:
+            code = str(
+                rand.randint(0, 10) * (10 ** 1) 
+                + rand.randint(0, 10) * (10 ** 2) 
+                + rand.randint(0, 10) * (10 ** 3)
+                + rand.randint(0, 10) * (10 ** 4)
+                + rand.randint(0, 10) * (10 ** 5)
+                + rand.randint(0, 10) * (10 ** 6)
+            ) 
 
         return code

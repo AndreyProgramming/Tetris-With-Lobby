@@ -12,6 +12,7 @@ var swapped_figure = null;
 var defaultGameSpeed = 500;
 
 var isPaused = false;
+var isMultiplayer = false;
 var currentX, currentY; //Позиция текущей фигурки
 var presavedShapes = []
 var shapes = [ //Массив фигур
@@ -195,7 +196,7 @@ function keyPress(key) { //Обработчик нажатий клавиш
     //document.getElementById("pause-window").style.display = isPaused ? 'block' : 'none';
   } 
 
-  if (isPaused)
+  if (isPaused && !isMultiplayer)
     return;
 
   switch (key) {
@@ -271,7 +272,7 @@ function valid(offsetX, offsetY, newCurrent) { //Проверка допусти
 
 
 function playGame() { //Контроль падения фигурки, создание новой и очистка линии
-  if (isPaused)
+  if (isPaused && !isMultiplayer)
     return;
   if (valid(0, 1)) 
   {
@@ -294,13 +295,15 @@ function playGame() { //Контроль падения фигурки, созд
 
 function changeGameSpeed(newGameSpeed)
 {
+  if (isMultiplayer)
+    return;
+     
   let speed = 1000 - newGameSpeed;
   clearInterval(interval);
   interval = setInterval(playGame, speed);
 }
-
+      
 function newGame() { //Новая игра
-  console.log("reset game");
   clearInterval(interval);
   init();
   shaped = 0; 
@@ -308,5 +311,3 @@ function newGame() { //Новая игра
   lose = false; lines = 0; count = 0; countPlus(0);
   interval = setInterval(playGame, defaultGameSpeed); //скорость игры, мс
 }
-
-newGame();

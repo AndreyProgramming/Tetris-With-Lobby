@@ -8,9 +8,15 @@ class Lobby():
 
     def __init__(self, playerHost):
         self.host = playerHost
-        self.players.append(playerHost)  
+        self.players.append(playerHost)
+        start_server = websockets.serve(self.handler, "localhost", 8000)  
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        asyncio.get_event_loop().run_until_complete(start_server)        
+        asyncio.get_event_loop().run_forever()
 
     def addPlayer(self, opponent):
+
         if len(self.players) == 2:
             return 
 
@@ -23,10 +29,7 @@ class Lobby():
         await websocket.send(reply)
         
     def startGame(self):
-        start_server = websockets.serve(self.handler, "localhost", 8000)
-        asyncio.get_event_loop().run_until_complete(start_server)        
-        asyncio.get_event_loop().run_forever()
-
+        pass
         
 
 

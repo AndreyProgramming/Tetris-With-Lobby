@@ -26,18 +26,20 @@
                     <div class="panel panel-default">
                         <div class="panel-heading text-center"><h3>Создание лобби 1vs1</h3></div>
                         <div class="panel-body">
-                            <form class="form-horizontal" role="form" method="POST" action="">
+                            <form class="form-horizontal" role="form" method="POST" action="/create_lobby">
                                 <div class="form-group">
                                     <div class="col-md-6 pt-2 pb-2">
-                                        <button id="create-lobby" type="button" class="btn btn-outline-light">
+                                        <button id="create-lobby" type="submit" class="btn btn-outline-light">
                                             Создать новое лобби
                                         </button>
                                     </div>
                                 </div>
+                            </form>
+                            <form  class="form-horizontal" role="form" method="POST" action="/join_lobby">
                                 <div class="form-group">
                                     <label for="code" class="col-md-4 pb-2 control-label">Или введите код вашего друга: </label>
                                     <div class="col-md-6">
-                                        <input id="code" type="text" class="form-control" name="code" required="">
+                                        <input id="keycode" type="text" class="form-control" name="keycode" required="">
                                     </div>
                                 </div>
                                 <div class="form-group">
